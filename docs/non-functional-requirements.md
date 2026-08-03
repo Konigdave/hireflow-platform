@@ -1,0 +1,5 @@
+- The system should process uploads asynchronously.
+- The system should support horizontal scaling.
+- The platform should be containerized.
+- Deployments should use GitOps.
+- Metrics should be exposed for Prometheus.
