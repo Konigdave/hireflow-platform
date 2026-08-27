@@ -27,6 +27,16 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+  worker:
+    build: .
+    command: celery -A config worker --loglevel=info
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
 volumes:
   postgres_data:
