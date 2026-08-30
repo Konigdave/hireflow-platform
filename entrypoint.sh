@@ -2,8 +2,10 @@
 
 set -e
 
+chown -R appuser:appuser /app/media
+
 echo "Applying database migrations..."
-python manage.py migrate
+su appuser -c "python manage.py migrate"
 
 echo "Starting Django..."
-exec python manage.py runserver 0.0.0.0:8000
+exec su appuser -c "python manage.py runserver 0.0.0.0:8000"

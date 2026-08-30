@@ -9,6 +9,8 @@ class DocumentStatus(models.TextChoices):
 
 
 class Document(models.Model):
+    file = models.FileField(upload_to="documents/", blank=True, null=True)
+
     original_filename = models.CharField(max_length=255)
     storage_key = models.CharField(max_length=500)
 

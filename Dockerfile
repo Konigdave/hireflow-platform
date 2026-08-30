@@ -27,13 +27,12 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY . .
 
-RUN chown -R appuser:appuser /app
-
 COPY entrypoint.sh .
 
-RUN chmod +x entrypoint.sh
+RUN chown -R appuser:appuser /app \
+    && chmod +x entrypoint.sh
 
-USER appuser
+USER root
 
 CMD ["./entrypoint.sh"]
 

@@ -129,3 +129,7 @@ STATIC_URL = 'static/'
 CELERY_BROKER_URL = (
     f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}/0"
 )
+STATIC_URL = 'static/'
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
