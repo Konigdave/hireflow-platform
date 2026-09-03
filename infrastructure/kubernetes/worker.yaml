@@ -21,7 +21,7 @@ spec:
 
       containers:
         - name: worker
-          image: hireflow:v3
+          image: hireflow:v4
           imagePullPolicy: IfNotPresent
 
           command:

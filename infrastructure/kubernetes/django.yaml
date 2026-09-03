@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: django
-          image: hireflow:v3
+          image: hireflow:v4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
