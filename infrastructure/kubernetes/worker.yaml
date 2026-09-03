@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: hireflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+
+    spec:
+      securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+
+      containers:
+        - name: worker
+          image: hireflow:v3
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - celery
+
+          args:
+            - -A
+            - config
+            - worker
+            - --loglevel=info
+
+          envFrom:
+            - configMapRef:
+                name: hireflow-config
+            - secretRef:
+                name: hireflow-secret
+
+          volumeMounts:
+            - name: media-storage
+              mountPath: /app/media
+
+      volumes:
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-pvc
