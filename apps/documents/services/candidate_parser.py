@@ -14,7 +14,7 @@ def extract_email(text: str) -> str:
 
     match = EMAIL_PATTERN.search(text)
 
-    return match.group(0) if match else ""
+    return match.group(0).lower() if match else ""
 
 
 def extract_phone(text: str) -> str:
