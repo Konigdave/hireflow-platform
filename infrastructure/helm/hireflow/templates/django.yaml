@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hireflow.fullname" . }}-django
+spec:
+  replicas: {{ .Values.django.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "hireflow.fullname" . }}-django
+
+  template:
+    metadata:
+      labels:
+        app: {{ include "hireflow.fullname" . }}-django
+
+    spec:
+      containers:
+        - name: django
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          ports:
+            - containerPort: 8000
+
+          envFrom:
+            - configMapRef:
+                name: {{ include "hireflow.fullname" . }}-config
+
+            - secretRef:
+                name: {{ include "hireflow.fullname" . }}-secret
+
+          volumeMounts:
+            - name: media-storage
+              mountPath: /app/media
+
+      volumes:
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: {{ default (printf "%s-media" (include "hireflow.fullname" .)) .Values.storage.media.existingClaim }}

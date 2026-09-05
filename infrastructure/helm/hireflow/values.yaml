@@ -1,0 +1,34 @@
+image:
+  repository: hireflow
+  tag: v4
+  pullPolicy: IfNotPresent
+
+database:
+  name: hireflow
+  user: hireflow
+  password: ""
+
+django:
+  replicaCount: 1
+  secretKey: ""
+
+worker:
+  replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: hireflow.local
+
+storage:
+  postgres:
+    size: 1Gi
+    existingClaim: postgres-pvc
+
+  media:
+    size: 1Gi
+    existingClaim: media-pvc

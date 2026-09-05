@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hireflow.fullname" . }}-worker
+spec:
+  replicas: {{ .Values.worker.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "hireflow.fullname" . }}-worker
+
+  template:
+    metadata:
+      labels:
+        app: {{ include "hireflow.fullname" . }}-worker
+
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+
+      containers:
+        - name: worker
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          command:
+            - celery
+
+          args:
+            - -A
+            - config
+            - worker
+            - --loglevel=info
+
+          envFrom:
+            - configMapRef:
+                name: {{ include "hireflow.fullname" . }}-config
+
+            - secretRef:
+                name: {{ include "hireflow.fullname" . }}-secret
+
+          volumeMounts:
+            - name: media-storage
+              mountPath: /app/media
+
+      volumes:
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: {{ default (printf "%s-media" (include "hireflow.fullname" .)) .Values.storage.media.existingClaim }}

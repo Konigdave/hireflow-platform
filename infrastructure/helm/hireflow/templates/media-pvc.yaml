@@ -1,0 +1,12 @@
+{{- if not .Values.storage.media.existingClaim }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "hireflow.fullname" . }}-media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage.media.size }}
+{{- end }}

@@ -1,0 +1,12 @@
+{{- if not .Values.storage.postgres.existingClaim }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "hireflow.fullname" . }}-postgres
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage.postgres.size }}
+{{- end }}
