@@ -1,0 +1,28 @@
+image:
+  repository: hireflow
+  tag: v4
+  pullPolicy: IfNotPresent
+
+django:
+  replicaCount: 3
+
+worker:
+  replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: hireflow.example.com
+
+storage:
+  postgres:
+    size: 10Gi
+    existingClaim: ""
+
+  media:
+    size: 10Gi
+    existingClaim: ""
