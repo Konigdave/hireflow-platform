@@ -9,7 +9,7 @@ database:
   password: ""
 
 django:
-  replicaCount: 1
+  replicaCount: 2
   secretKey: ""
 
 worker:
