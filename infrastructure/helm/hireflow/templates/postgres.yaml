@@ -32,7 +32,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "hireflow.fullname" . }}-secret
+                  name: {{ default (printf "%s-secret" (include "hireflow.fullname" .)) .Values.secrets.existingSecret }}
                   key: POSTGRES_PASSWORD
 
           volumeMounts:

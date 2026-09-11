@@ -32,3 +32,6 @@ storage:
   media:
     size: 1Gi
     existingClaim: media-pvc
+
+secrets:
+  existingSecret: hireflow-helm-secret
