@@ -10,7 +10,7 @@
       "Condition": {
         "StringEquals": {
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-          "token.actions.githubusercontent.com:sub": "repo:Konigdave@U_kgDOC6nYKg/hireflow-platform@R_kgDOTsHNEQ:ref:refs/heads/main"
+          "token.actions.githubusercontent.com:sub": "repo:Konigdave@195680298/hireflow-platform@1321323793:ref:refs/heads/main"
         }
       }
     }
