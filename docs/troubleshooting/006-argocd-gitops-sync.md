@@ -2,7 +2,7 @@
 
 ## Objective
 
-Move HireFlow from manual Helm deployments to a GitOps workflow using Argo CD.
+I wanted to move HireFlow from manually running Helm commands to a GitOps workflow using Argo CD.
 
 ```
 Before:  Git → helm upgrade → Kubernetes
@@ -13,22 +13,22 @@ After:   Git → Argo CD → Helm → Kubernetes
 
 ## Setup
 
-Argo CD was installed into the `argocd` namespace. All components came up healthy.
+I installed Argo CD into the `argocd` namespace and confirmed all components came up healthy. I also installed the Argo CD CLI locally and connected it to the in-cluster Kubernetes API.
 
-HireFlow was already running as a Helm release (`hireflow-helm`) with Django, Postgres, Redis, and Worker all healthy.
+At this point HireFlow was already running as a Helm release (`hireflow-helm`) with Django, Postgres, Redis, and Worker all healthy.
 
-**Secret handling:** the chart was updated to reference an existing secret rather than create one:
+**Secret handling:** I updated the chart to reference an existing secret rather than create one, so Argo CD could render the chart without credentials committed to Git:
 
 ```yaml
 secrets:
   existingSecret: hireflow-helm-secret
 ```
 
-This means Argo CD can render the chart without credentials committed to Git.
-
 ---
 
 ## Argo CD Application
+
+I created an Argo CD Application named `hireflow` with the following config:
 
 | Field | Value |
 |---|---|
@@ -39,26 +39,30 @@ This means Argo CD can render the chart without credentials committed to Git.
 | Namespace | `hireflow` |
 | Helm release name | `hireflow-helm` |
 
-Using the existing Helm release name preserved all current resource names.
+I reused the existing Helm release name to preserve all current Kubernetes resource names.
 
 ---
 
 ## Initial Sync
 
-Before the first sync, Argo CD reported `OutOfSync` — it had added `argocd.argoproj.io/tracking-id` metadata that wasn't in the cluster yet. No workload changes were detected.
+Before syncing, Argo CD reported `OutOfSync`. I inspected the diff and found it was only adding `argocd.argoproj.io/tracking-id` metadata — no workload changes. The app was still healthy.
 
-> `OutOfSync` ≠ broken. The app was healthy; Argo CD just hadn't taken ownership yet.
+> `OutOfSync` ≠ broken. Argo CD just hadn't taken ownership yet.
+
+I ran:
 
 ```bash
 argocd app sync hireflow
 # → Sync Status: Synced | Health Status: Healthy
 ```
 
+All existing pods remained healthy.
+
 ---
 
 ## GitOps Verification
 
-To confirm Argo CD was actually watching Git, a controlled change was made:
+To confirm Argo CD was actually watching Git, I made a controlled change:
 
 ```yaml
 # infrastructure/helm/hireflow/values.yaml
@@ -66,7 +70,9 @@ django:
   replicaCount: 2   # was 1
 ```
 
-After pushing to GitHub, Argo CD detected drift and reported `OutOfSync`. Because the sync policy was **Manual**, it waited for an explicit command:
+I committed and pushed to GitHub. Argo CD immediately detected drift and reported `OutOfSync`. Because I had set the sync policy to **Manual**, it waited for my command rather than applying the change automatically.
+
+I then synced manually:
 
 ```bash
 argocd app sync hireflow
@@ -78,10 +84,10 @@ argocd app sync hireflow
 
 ## Key Lessons
 
-- **Git is the desired state.** Argo CD reconciles the cluster to match it.
-- **Helm and Argo CD are complementary.** Helm renders resources; Argo CD manages when they're applied.
-- **Manual sync policy** is useful for controlled rollouts — Argo CD detects drift but waits for your command.
-- **`OutOfSync` is not an outage.** A healthy app can be out of sync.
+- **Git is the desired state.** I change a value in Git; Argo CD reconciles the cluster to match it.
+- **Helm and Argo CD are complementary.** Helm renders the resources; Argo CD decides when they're applied.
+- **I used Manual sync policy** to keep control during the initial setup — Argo CD detects drift but waits for my explicit command.
+- **`OutOfSync` is not an outage.** I learned early on that a healthy app can be out of sync.
 
 ---
 
