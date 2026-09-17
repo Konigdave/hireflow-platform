@@ -29,3 +29,15 @@ Thumbs.db
 # Logs
 *.log
 infrastructure/kubernetes/secret.yaml
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+
+# Keep example variable files
+!*.tfvars.example
