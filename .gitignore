@@ -34,6 +34,7 @@ infrastructure/kubernetes/secret.yaml
 **/.terraform/*
 *.tfstate
 *.tfstate.*
+*.tfstate.backup*
 crash.log
 crash.*.log
 *.tfvars
