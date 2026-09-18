@@ -4,6 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ include "hireflow.fullname" . }}-postgres
 spec:
+  storageClassName: gp3
   accessModes:
     - ReadWriteOnce
   resources:
