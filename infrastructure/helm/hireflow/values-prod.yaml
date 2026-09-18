@@ -4,10 +4,10 @@ image:
   pullPolicy: IfNotPresent
 
 django:
-  replicaCount: 3
+  replicaCount: 1
 
 worker:
-  replicaCount: 2
+  replicaCount: 1
 
 service:
   type: ClusterIP
@@ -15,8 +15,12 @@ service:
 
 ingress:
   enabled: true
-  className: nginx
+  className: alb
   host: hireflow.example.com
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
 
 storage:
   postgres:
