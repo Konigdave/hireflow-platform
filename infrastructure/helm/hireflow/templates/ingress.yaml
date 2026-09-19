@@ -4,12 +4,25 @@ kind: Ingress
 metadata:
   name: {{ include "hireflow.fullname" . }}
   annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /health/
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
+    # Health-check route without a hostname requirement
+    - http:
+        paths:
+          - path: /health/
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "hireflow.fullname" . }}-django
+                port:
+                  number: {{ .Values.service.port }}
+
+    # Normal application routes using the configured hostname
     - host: {{ .Values.ingress.host }}
       http:
         paths:
