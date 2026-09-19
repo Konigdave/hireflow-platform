@@ -23,6 +23,27 @@ spec:
           ports:
             - containerPort: 8000
 
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready/
+              port: 8000
+              httpHeaders:
+                - name: Host
+                  value: hireflow-helm-django
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
           envFrom:
             - configMapRef:
                 name: {{ include "hireflow.fullname" . }}-config
