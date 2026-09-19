@@ -27,6 +27,9 @@ spec:
             httpGet:
               path: /health/
               port: 8000
+              httpHeaders:
+                - name: Host
+                  value: hireflow-helm-django
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
