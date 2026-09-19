@@ -9,4 +9,4 @@ data:
   POSTGRES_PORT: "5432"
   REDIS_HOST: {{ include "hireflow.fullname" . }}-redis
   REDIS_PORT: "6379"
-  ALLOWED_HOSTS: "{{ .Values.ingress.host }},localhost,127.0.0.1"
+  ALLOWED_HOSTS: "*"
