@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hireflow
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Konigdave/hireflow-platform.git
+    targetRevision: main
+    path: infrastructure/helm/hireflow
+
+    helm:
+      valueFiles:
+        - values-prod.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hireflow
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
