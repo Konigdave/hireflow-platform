@@ -25,8 +25,8 @@ ingress:
 storage:
   postgres:
     size: 10Gi
-    existingClaim: ""
+    existingClaim: hireflow-helm-postgres
 
   media:
     size: 10Gi
-    existingClaim: ""
+    existingClaim: hireflow-helm-media
