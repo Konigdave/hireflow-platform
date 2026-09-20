@@ -1,6 +1,6 @@
 image:
-  repository: hireflow
-  tag: v4
+  repository: 784055307315.dkr.ecr.us-east-1.amazonaws.com/hireflow
+  tag: 7c78ef78e7614466d4720e0171046f9aac2950fb
   pullPolicy: IfNotPresent
 
 django:
