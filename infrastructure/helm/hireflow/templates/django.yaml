@@ -5,6 +5,9 @@ metadata:
 spec:
   replicas: {{ .Values.django.replicaCount }}
 
+  strategy:
+    type: Recreate
+
   selector:
     matchLabels:
       app: {{ include "hireflow.fullname" . }}-django
