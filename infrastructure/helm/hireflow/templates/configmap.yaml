@@ -10,4 +10,3 @@ data:
   REDIS_HOST: {{ include "hireflow.fullname" . }}-redis
   REDIS_PORT: "6379"
   ALLOWED_HOSTS: "hireflow.example.com,k8s-hireflow-hireflow-441cf68d4b-542252380.us-east-1.elb.amazonaws.com,hireflow-helm-django,localhost,127.0.0.1"
-  GITOPS_TEST: "v2"
