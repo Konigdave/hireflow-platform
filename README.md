@@ -10,7 +10,7 @@ The project was built to demonstrate practical Cloud and DevOps engineering skil
 
 ## Architecture
 
-![HireFlow System Architecture](../diagrams/hireflow-architecture.png)
+![HireFlow System Architecture](diagrams/hireflow-architecture.png)
 
 For a detailed explanation of the architecture and design decisions, see:
 
