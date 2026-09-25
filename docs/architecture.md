@@ -37,7 +37,7 @@ HireFlow follows an API-first architecture where document uploads are handled by
 
 ### Document Processing Flow
 
-```text
+
 ```
 Client
   │
